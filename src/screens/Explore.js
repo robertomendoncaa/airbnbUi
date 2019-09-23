@@ -44,7 +44,7 @@ class Explore extends Component {
     });
     this.animatedTagTop = this.animatedHeaderHeight.interpolate({
       inputRange: [this.endHeaderHeight, this.startHeaderHeight],
-      outputRange: [-30, 10],
+      outputRange: [-20, 10],
       extrapolate: 'clamp',
     });
     this.animatedMarginTop = this.animatedHeaderHeight.interpolate({
@@ -60,9 +60,9 @@ class Explore extends Component {
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
 
         <View style={{ flex: 1 }}>
-          <View
+          <Animated.View
             style={{
-              height: this.startHeaderHeight,
+              height: this.animatedHeaderHeight,
               backgroundColor: 'white',
               borderBottomWidth: 1,
               borderBottomColor: '#dddddd',
@@ -70,32 +70,51 @@ class Explore extends Component {
           >
             <View
               style={{
+                alignItems: 'center',
+                paddingLeft: 20,
                 flexDirection: 'row',
-                padding: 10,
+                padding: 5,
                 backgroundColor: 'white',
                 marginHorizontal: 20,
                 shadowOffset: { width: 0, height: 0 },
                 shadowColor: 'black',
                 shadowOpacity: 0.2,
                 elevation: 1,
-                marginTop: Platform.OS === 'android' ? 30 : null,
+                marginTop: Platform.OS === 'android' ? 20 : null,
               }}
             >
-              <Icon name="ios-search" size={20} style={{ marginRight: 10 }} />
+              <Icon name="ios-search" size={26} style={{ marginRight: 15 }} />
               <TextInput
                 underlineColorAndroid="transparent"
                 placeholder="Try new destination..."
                 placeholderTextColor="grey"
                 style={{
                   flex: 1,
-                  fontWeight: 'bold',
+                  fontWeight: '500',
                   backgroundColor: 'white',
                 }}
               />
             </View>
-          </View>
+            <Animated.View
+              style={{
+                flexDirection: 'row',
+                marginHorizontal: 20,
+                position: 'relative',
+                top: this.animatedTagTop,
+                opacity: this.animatedOpacity,
+              }}
+            >
+              <Tag name="Guests" />
+              <Tag name="Dates" />
+            </Animated.View>
+          </Animated.View>
 
-          <ScrollView scrollEventThrottle={16}>
+          <ScrollView
+            scrollEventThrottle={16}
+            onScroll={Animated.event([
+              { nativeEvent: { contentOffset: { y: this.scrollY } } },
+            ])}
+          >
             <View style={{ flex: 1, backgroundColor: '#fff', paddingTop: 20 }}>
               <Text
                 style={{
