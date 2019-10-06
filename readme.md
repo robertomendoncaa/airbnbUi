@@ -1,1 +1,1 @@
-yarn add react-navigation
+
